@@ -1,0 +1,23 @@
+<project name="Dorothy" basedir="." default="main">
+
+    <property name="src.dir"     value="src"/>
+
+    <property name="dist.dir"    value="dist"/>
+    <property name="src.dir"     value="src"/>
+    <property name="lib.dir"     value="lib"/>
+
+    <target name="clean">
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="dist">
+        <mkdir dir="${dist.dir}"/>
+        <copy todir="${dist.dir}">
+        	<fileset dir="${src.dir}" />
+        	<fileset dir="${lib.dir}" />
+		</copy>
+    </target>
+
+    <target name="main" depends="clean,dist"/>
+
+</project>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	Dorothy Site XML 1.0
+		- Config: Define um numero indeterminado de parametros acessiveis através da API.
+		- Pages: Define as páginas do site.
+		- Assets: Define ficheiros a serem carregados. Podem ser inseridos dentro de uma página ou na root do site.
+-->
+<site title="Dorothy Example - {PAGE}" version="1.0">
+	<config>
+		<param name="debug" value="true" />
+		<param name="images_path" value="{BASEURI}app/templates/img/" />
+		<param name="videos_path" value="{BASEURI}app/templates/videos/" />
+		<param name="swf_path" value="{BASEURI}app/templates/swf/" />
+	</config>
+	<!--
+	<asset src="" type="" />
+	-->
+	<pages>
+		<page id="homepage" src="homepage.swf" title="About Us" />
+		<page id="portfolio" src="portfolio.swf" title="Portfolio">
+			<page id="motion" src="motion.swf" title="Motion Graphics" keepParent="true"/>
+			<page id="web" src="web.swf" title="Web Design" />
+		</page>
+	</pages>
+</site>
