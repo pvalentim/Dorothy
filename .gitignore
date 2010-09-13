@@ -1,10 +1,8 @@
 .project
 .as3_classpath
 .externalToolBuilders/Dorothy Builder.launch
-build.xml
 logo.psd
 .settings/com.powerflasher.fdt.classpath
 .settings/com.powerflasher.fdt.core.prefs
 .settings/org.eclipse.core.resources.prefs
-assets/testsite.xml
 framework_planning.xls
