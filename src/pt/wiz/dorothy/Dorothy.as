@@ -4,7 +4,7 @@
 	import pt.wiz.dorothy.core.DApplication;
 	/**
 	 * ...
-	 * @author Wiz Interactive
+	 * @author Wiz Interactive UI
 	 */
 	public class Dorothy
 	{
