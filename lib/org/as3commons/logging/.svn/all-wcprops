@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/275/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging
+END
+ILoggerFactory.as
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/!svn/ver/235/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging/ILoggerFactory.as
+END
+LoggerProxy.as
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/!svn/ver/235/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging/LoggerProxy.as
+END
+LoggerFactory.as
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/!svn/ver/235/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging/LoggerFactory.as
+END
+ILogger.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/235/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging/ILogger.as
+END
+LogLevel.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/235/trunk/as3-commons-logging/src/main/actionscript/org/as3commons/logging/LogLevel.as
+END
