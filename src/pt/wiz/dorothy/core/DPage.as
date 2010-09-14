@@ -21,6 +21,8 @@ package pt.wiz.dorothy.core {
 	 
 	public class DPage extends MovieClip {
 		
+		public var assets:Array;
+		
 		public function DPage() {
 			
 		}

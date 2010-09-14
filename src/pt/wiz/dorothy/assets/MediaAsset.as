@@ -26,7 +26,7 @@ package pt.wiz.dorothy.assets {
 	 */
 	[Event(name="dorothy_assetProgress", type="pt.wiz.dorothy.events.AssetEvent")] 
 	
-	public class MediaAsset extends EventDispatcher {
+	public class MediaAsset extends EventDispatcher implements IAsset {
 		
 		private var _status: String;
 		private var _loader : Loader;
@@ -74,7 +74,21 @@ package pt.wiz.dorothy.assets {
 		
 		public function load():void
 		{
-			_loader.load(new URLRequest(_name));
+			if (_status != "loading")
+			{
+				_loader.load(new URLRequest(_name));
+			} else {
+				Out.warn("Asset " + _name + " already loading");
+			}
+		}
+		
+		public function cancel():void
+		{
+			if (_status == "loading")
+			{
+				_loader.close();
+				_status = "canceled";
+			}
 		}
 		
 		public function get name() : String

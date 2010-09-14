@@ -1,7 +1,7 @@
-package pt.wiz.dorothy.assets
+package pt.wiz.dorothy.core
 {
 	import pt.wiz.dorothy.Dorothy;
-	import pt.wiz.dorothy.core.DPage;
+	import pt.wiz.dorothy.assets.MediaAsset;
 	/**
 	 * @author Pedro Valentim
 	 */

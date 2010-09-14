@@ -1,6 +1,6 @@
 ﻿package pt.wiz.dorothy.core 
 {
-	import pt.wiz.dorothy.assets.PageAsset;
+	
 	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.events.DEvent;
 	import flash.events.EventDispatcher;
@@ -76,7 +76,7 @@
 			{
 				parsePage(p);
 			}
-			for each (var i : PageAsset in _pages.data) {
+			for each (var i : Page in _pages.data) {
 				//trace(i.path);
 			}
 			
@@ -92,7 +92,7 @@
 		
 		private function parsePage(page:XML, parent:* = null):void
 		{
-			var _page:PageAsset = new PageAsset(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
+			var _page:Page = new Page(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
 			_pages.addItem(_page);
 			
 			if (page.children())

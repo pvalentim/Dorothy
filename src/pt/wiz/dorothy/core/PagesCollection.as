@@ -1,6 +1,6 @@
 package pt.wiz.dorothy.core
 {
-	import pt.wiz.dorothy.assets.PageAsset;
+	
 	import pt.wiz.dorothy.debug.Out;
 	/**
 	 * @author Pedro Valentim
@@ -17,21 +17,21 @@ package pt.wiz.dorothy.core
 				_data = data;
 		}
 		
-		public function addItem(item:PageAsset):void
+		public function addItem(item:Page):void
 		{
 			_data.push(item);
 		}
 		
-		public function getItemAt(id:int):PageAsset
+		public function getItemAt(id:int):Page
 		{
 			return _data[id];
 		}
 		
-		public function getPageBy(field:String, value:String):PageAsset
+		public function getPageBy(field:String, value:String):Page
 		{
 			if (_data[0][field] != null)
 			{
-				for each (var p : PageAsset in _data) {
+				for each (var p : Page in _data) {
 					if (p[field] == value)
 						return p;
 				}
@@ -43,9 +43,9 @@ package pt.wiz.dorothy.core
 			}
 		}
 		
-		public function getPageByPath(path:String):PageAsset
+		public function getPageByPath(path:String):Page
 		{
-			var page:PageAsset = getPageBy("path", path);
+			var page:Page = getPageBy("path", path);
 			if (page != null)
 			{
 				return page;

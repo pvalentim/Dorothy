@@ -1,6 +1,6 @@
 ﻿package pt.wiz.dorothy.core 
 {
-	import pt.wiz.dorothy.assets.PageAsset;
+	
 	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.events.DEvent;
 	import flash.events.EventDispatcher;

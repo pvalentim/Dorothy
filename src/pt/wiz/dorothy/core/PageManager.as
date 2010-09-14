@@ -1,7 +1,7 @@
 ﻿package pt.wiz.dorothy.core
 {
 	import pt.wiz.dorothy.events.AssetEvent;
-	import pt.wiz.dorothy.assets.PageAsset;
+	
 	import pt.wiz.dorothy.events.PageEvent;
 	import pt.wiz.dorothy.debug.Out;
 	import com.asual.swfaddress.SWFAddressEvent;
@@ -17,7 +17,7 @@
 	{
 		private var _pages:PagesCollection;
 		private var _curPages:PagesCollection;
-		private var _nextPage:PageAsset;
+		private var _nextPage:Page;
 
 		public function PageManager(pages:PagesCollection)
 		{
@@ -43,7 +43,7 @@
 				return;
 			} else {
 				Out.info("Page " + _nextPage.id + " found");
-				var _lastLoadedPage:PageAsset = _curPages.getItemAt(_curPages.length - 1);
+				var _lastLoadedPage:Page = _curPages.getItemAt(_curPages.length - 1);
 				if (_lastLoadedPage != null)
 				{
 					if (_nextPage.id != _lastLoadedPage.id)
@@ -60,7 +60,7 @@
 			addPageEventListeners(_nextPage);
 			if (_curPages.length > 0)
 			{
-				var lastLoadedPage:PageAsset = PageAsset(_curPages[_curPages.length - 1]);
+				var lastLoadedPage:Page = Page(_curPages[_curPages.length - 1]);
 				if (_nextPage.parent == lastLoadedPage)
 				{
 					// The new page is child of a current loaded page.
@@ -72,9 +72,9 @@
 					}
 				} else {
 					// The new page is root page. Unload everthing and load the new one on top.
-					for each (var page : PageAsset in _curPages.data)
+					for each (var page : Page in _curPages.data)
 					{
-						page.pageContent.transitionOut();
+						page.movie.transitionOut();
 					}
 				}
 			} else {
@@ -83,16 +83,16 @@
 			}
 		}
 		
-		private function addPageEventListeners(page:PageAsset):void
+		private function addPageEventListeners(page:Page):void
 		{
-			page.addEventListener(AssetEvent.PROGRESS, page_progressHandler);			page.addEventListener(AssetEvent.COMPLETE, page_completeHandler);
+			page.addEventListener(PageEvent.LOAD_PROGRESS, page_progressHandler);			page.addEventListener(PageEvent.LOAD_COMPLETE, page_completeHandler);
 		}
 
 		private function page_completeHandler(event:AssetEvent) : void
 		{
-			var page:PageAsset = event.target as PageAsset;
-			addContentEventListeners(page.pageContent);
-			Out.info("Page " + PageAsset(event.target).id + " Loaded");
+			var page:Page = event.target as Page;
+			addContentEventListeners(page.movie);
+			Out.info("Page " + Page(event.target).id + " Loaded");
 			// TODO: Add movie to target holder.
 		}
 

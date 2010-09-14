@@ -40,13 +40,14 @@ package pt.wiz.dorothy.assets
 			_loadingMode = AssetManager.PARALLEL;
 		}
 
-		public function add(name:String):void
+		public function add(name:String, type:String="auto"):void
 		{
 			if (!_loading)
 			{
 				if (assetByName(name) == null)
 				{
-					assets.push(new MediaAsset(name));
+					
+					assets.push(getAssetType(name, type));
 					Out.debug("Dorothy Assets - Added new asset "+name);
 				} else {
 					Out.debug("Dorothy Assets - Asset "+ name +" already in list. Use get(\""+name+"\") or getContent(\""+name+"\")");
@@ -54,6 +55,22 @@ package pt.wiz.dorothy.assets
 			} else {
 				Out.debug("Dorothy Assets - Loader " + _name + " already started.");
 			}
+		}
+
+		private function getAssetType(name:String, type:String) : IAsset
+		{
+			switch(type){
+				case "auto":
+					// TODO: Determine the type of asset.
+					break;
+				case "swf":
+				case "jpg":
+				case "gif":
+				case "png":
+					return new MediaAsset(name);
+					break;
+			}
+			return null;
 		}
 		
 		public function start():void

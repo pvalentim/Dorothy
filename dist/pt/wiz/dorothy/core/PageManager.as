@@ -1,7 +1,7 @@
 ﻿package pt.wiz.dorothy.core
 {
 	import pt.wiz.dorothy.events.AssetEvent;
-	import pt.wiz.dorothy.assets.PageAsset;
+	
 	import pt.wiz.dorothy.events.PageEvent;
 	import pt.wiz.dorothy.debug.Out;
 	import com.asual.swfaddress.SWFAddressEvent;
