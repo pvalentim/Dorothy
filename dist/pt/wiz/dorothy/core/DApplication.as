@@ -1,11 +1,11 @@
 ﻿package pt.wiz.dorothy.core 
 {
+	import flash.display.Sprite;
+	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
 	import org.as3commons.logging.LoggerFactory;
-
-	import pt.wiz.dorothy.debug.MonsterDebuggerLoggerFactory;
 
 	import flash.ui.ContextMenu;
 	import pt.wiz.dorothy.util.ContextMenuUtil;
@@ -13,14 +13,13 @@
 	import flash.events.Event;
 
 	import pt.wiz.dorothy.events.DEvent;
-	import flash.display.Sprite;
 	import pt.wiz.dorothy.Dorothy;
 	
 	/**
 	 * ...
 	 * @author Wiz Interactive
 	 */
-	public class DApplication extends Sprite
+	public class DApplication extends MovieClip
 	{
 		private static var _instance:DApplication;
 		
@@ -29,6 +28,7 @@
 		private var _baseuri:String ="/";
 		private var _preloader:IPreloader;
 		
+		protected var top_layer:Sprite;
 		protected var siteXML:String;
 		
 		
@@ -69,13 +69,28 @@
 			if (root.loaderInfo.url.indexOf("http") == 0) SystemManager.isOnline = true;
 			
 			parseFlashvars();
+			setupLayers();
 			setupPreloader();
+		}
+		
+		override public function addChild(child:DisplayObject):DisplayObject
+		{
+			super.addChild(child);
+			if (child != top_layer)
+				swapChildren(child, top_layer);
+			return child;
+		}
+
+		private function setupLayers() : void
+		{
+			top_layer = new Sprite();
+			addChild(top_layer);
 		}
 
 		private function setupPreloader() : void
 		{
 			_preloader = new DPreloader();
-			addChild(_preloader as DisplayObject);
+			top_layer.addChild(_preloader as DisplayObject);
 		}
 
 		private function _appReady(event : DEvent) : void 

@@ -8,8 +8,6 @@ package pt.wiz.dorothy.events
 	public class PageEvent extends Event
 	{
 		
-		public static const LOAD_COMPLETE:String = "dpage_loadComplete";
-		public static const LOAD_PROGRESS:String = "dpage_loadProgress";
 		public static const TRANSITION_OUT_COMPLETE:String = "dpage_transitionOutComplete";
 		public static const TRANSITION_IN_COMPLETE:String = "dpage_transitionInComplete";
 		

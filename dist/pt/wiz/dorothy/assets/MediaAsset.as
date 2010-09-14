@@ -11,7 +11,22 @@ package pt.wiz.dorothy.assets {
 	/**
 	 * @author Pedro Valentim
 	 */
-	public class Asset extends EventDispatcher {
+	 
+	 /**
+	 * Dispatched when the asset is finished loading.
+	 * 
+	 * @eventType pt.wiz.dorothy.events.AssetEvent
+	 */
+	[Event(name="dorothy_assetComplete", type="pt.wiz.dorothy.events.AssetEvent")] 
+	
+	/**
+	 * Dispatched while the asset is loading.
+	 * 
+	 * @eventType pt.wiz.dorothy.events.AssetEvent
+	 */
+	[Event(name="dorothy_assetProgress", type="pt.wiz.dorothy.events.AssetEvent")] 
+	
+	public class MediaAsset extends EventDispatcher {
 		
 		private var _status: String;
 		private var _loader : Loader;
@@ -19,7 +34,7 @@ package pt.wiz.dorothy.assets {
 		
 		private var _content:*;
 
-		public function Asset(name:String)
+		public function MediaAsset(name:String)
 		{
 			_name = name;
 			init();
@@ -32,24 +47,24 @@ package pt.wiz.dorothy.assets {
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loader_progressHandler);			_loader.contentLoaderInfo.addEventListener(Event.OPEN, loader_startHandler);
 		}
 
-		private function loader_startHandler(event : Event) : void 
+		protected function loader_startHandler(event : Event) : void 
 		{
 			_status = "loading";
 		}
 
-		private function loader_progressHandler(event : ProgressEvent) : void 
+		protected function loader_progressHandler(event : ProgressEvent) : void 
 		{
 			dispatchEvent(new AssetEvent(AssetEvent.PROGRESS, event.bytesLoaded/event.bytesTotal));
 		}
 
-		private function loader_errorHandler(event : IOErrorEvent) : void 
+		protected function loader_errorHandler(event : IOErrorEvent) : void 
 		{
 			_status = "error";
 			Out.debug(_name + " asset error: "+ event.text);
 			dispatchEvent(new AssetEvent(AssetEvent.ERROR, 0, event.text));
 		}
 
-		private function loader_completeHandler(event : Event) : void 
+		protected function loader_completeHandler(event : Event) : void 
 		{
 			_status = "complete";
 			// Cache content

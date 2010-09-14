@@ -46,7 +46,7 @@ package pt.wiz.dorothy.assets
 			{
 				if (assetByName(name) == null)
 				{
-					assets.push(new Asset(name));
+					assets.push(new MediaAsset(name));
 					Out.debug("Dorothy Assets - Added new asset "+name);
 				} else {
 					Out.debug("Dorothy Assets - Asset "+ name +" already in list. Use get(\""+name+"\") or getContent(\""+name+"\")");
@@ -64,13 +64,13 @@ package pt.wiz.dorothy.assets
 			{
 				_maxConnections = 1;
 				queue.push(assets.shift());
-				setupAsset(Asset(queue[0]));
+				setupAsset(MediaAsset(queue[0]));
 			} else {
 				for (var i : int = 0;i < _maxConnections;i++)
 				{
 					if (assets[i] != null)
 					{
-						var asset:Asset = assets.shift();
+						var asset:MediaAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -87,7 +87,7 @@ package pt.wiz.dorothy.assets
 				{
 					if (assets[i] != null)
 					{
-						var asset:Asset = assets.shift();
+						var asset:MediaAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -104,7 +104,7 @@ package pt.wiz.dorothy.assets
 				{
 					if (assets[i] != null)
 					{
-						var asset:Asset = assets.shift();
+						var asset:MediaAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -119,14 +119,14 @@ package pt.wiz.dorothy.assets
 			}
 		}
 
-		private function setupAsset(asset:Asset):void
+		private function setupAsset(asset:MediaAsset):void
 		{
 			asset.addEventListener(AssetEvent.COMPLETE, asset_completeHandler);
 			asset.addEventListener(AssetEvent.ERROR, asset_errorHandler);
 			asset.load();
 		}
 
-		public function get(name:String):Asset
+		public function get(name:String):MediaAsset
 		{
 			return assetByName(name);
 		}
@@ -136,13 +136,13 @@ package pt.wiz.dorothy.assets
 			return assetByName(name).content;
 		}
 		
-		private function assetByName(name:String):Asset
+		private function assetByName(name:String):MediaAsset
 		{
 			var i:int = -1;
 			var ln:int = assets.length;
 			while (++i < ln)
 			{
-				if (Asset(assets[i]).name == name)
+				if (MediaAsset(assets[i]).name == name)
 					return assets[i];
 			}
 			return null;
