@@ -8,10 +8,25 @@ package pt.wiz.dorothy.assets
 	/**
 	 * @author Pedro Valentim
 	 */
+	 
+	/**
+	 * Dispatched when all assets finished loading.
+	 * 
+	 * @eventType pt.wiz.dorothy.events.AssetEvent
+	 */
+	[Event(name="dorothy_assetComplete", type="pt.wiz.dorothy.events.AssetEvent")] 
+	
+	/**
+	 * Dispatched while the assets are loading.
+	 * 
+	 * @eventType pt.wiz.dorothy.events.AssetEvent
+	 */
+	[Event(name="dorothy_assetProgressAll", type="pt.wiz.dorothy.events.AssetEvent")] 
+	
 	public class AssetManager extends EventDispatcher {
 		
 		private var assets:Array;
-		
+		private var completed_assets:Array;
 		private var queue:Array;
 		
 		private var _name:String;
@@ -37,6 +52,7 @@ package pt.wiz.dorothy.assets
 		{
 			DAssets.addLoader(this);
 			assets = [];
+			completed_assets = [];
 			_loadingMode = AssetManager.PARALLEL;
 		}
 
@@ -69,6 +85,9 @@ package pt.wiz.dorothy.assets
 				case "png":
 					return new MediaAsset(name);
 					break;
+				case "page":
+					return new PageAsset(name);
+					break;
 			}
 			return null;
 		}
@@ -80,14 +99,14 @@ package pt.wiz.dorothy.assets
 			if (_loadingMode == AssetManager.SEQUENTIAL)
 			{
 				_maxConnections = 1;
-				queue.push(assets.shift());
-				setupAsset(MediaAsset(queue[0]));
+				queue.push(assets.shift() as IAsset);
+				setupAsset(IAsset(queue[0]));
 			} else {
 				for (var i : int = 0;i < _maxConnections;i++)
 				{
 					if (assets[i] != null)
 					{
-						var asset:MediaAsset = assets.shift();
+						var asset:IAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -104,7 +123,7 @@ package pt.wiz.dorothy.assets
 				{
 					if (assets[i] != null)
 					{
-						var asset:MediaAsset = assets.shift();
+						var asset:IAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -114,14 +133,14 @@ package pt.wiz.dorothy.assets
 
 		private function asset_completeHandler(event : AssetEvent) : void 
 		{
-			queue.splice(queue.indexOf(event.target), 1);
+			completed_assets.push(queue.splice(queue.indexOf(event.target), 1)[0]);
 			if (queue.length < _maxConnections)
 			{
 				for (var i : int = 0;i < _maxConnections-queue.length;i++)
 				{
 					if (assets[i] != null)
 					{
-						var asset:MediaAsset = assets.shift();
+						var asset:IAsset = assets.shift();
 						queue.push(asset);
 						setupAsset(asset);
 					}
@@ -136,16 +155,21 @@ package pt.wiz.dorothy.assets
 			}
 		}
 
-		private function setupAsset(asset:MediaAsset):void
+		private function setupAsset(asset:IAsset):void
 		{
 			asset.addEventListener(AssetEvent.COMPLETE, asset_completeHandler);
 			asset.addEventListener(AssetEvent.ERROR, asset_errorHandler);
 			asset.load();
 		}
 
-		public function get(name:String):MediaAsset
+		public function get(name:String):IAsset
 		{
 			return assetByName(name);
+		}
+		
+		public function getById(id:uint):IAsset
+		{
+			return completed_assets[id] as IAsset;
 		}
 		
 		public function getContent(name:String):*
@@ -153,13 +177,13 @@ package pt.wiz.dorothy.assets
 			return assetByName(name).content;
 		}
 		
-		private function assetByName(name:String):MediaAsset
+		private function assetByName(name:String):IAsset
 		{
 			var i:int = -1;
 			var ln:int = assets.length;
 			while (++i < ln)
 			{
-				if (MediaAsset(assets[i]).name == name)
+				if (IAsset(assets[i]).name == name)
 					return assets[i];
 			}
 			return null;

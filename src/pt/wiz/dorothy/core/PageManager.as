@@ -88,7 +88,7 @@
 			page.addEventListener(PageEvent.LOAD_PROGRESS, page_progressHandler);			page.addEventListener(PageEvent.LOAD_COMPLETE, page_completeHandler);
 		}
 
-		private function page_completeHandler(event:AssetEvent) : void
+		private function page_completeHandler(event:PageEvent) : void
 		{
 			var page:Page = event.target as Page;
 			addContentEventListeners(page.movie);
@@ -96,7 +96,7 @@
 			// TODO: Add movie to target holder.
 		}
 
-		private function page_progressHandler(event:AssetEvent) : void
+		private function page_progressHandler(event:PageEvent) : void
 		{
 			// TODO: Update preloader.
 		}

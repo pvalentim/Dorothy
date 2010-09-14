@@ -26,7 +26,7 @@ package pt.wiz.dorothy.assets
 	public class AssetManager extends EventDispatcher {
 		
 		private var assets:Array;
-		
+		private var completed_assets:Array;
 		private var queue:Array;
 		
 		private var _name:String;
@@ -52,6 +52,7 @@ package pt.wiz.dorothy.assets
 		{
 			DAssets.addLoader(this);
 			assets = [];
+			completed_assets = [];
 			_loadingMode = AssetManager.PARALLEL;
 		}
 
@@ -98,7 +99,7 @@ package pt.wiz.dorothy.assets
 			if (_loadingMode == AssetManager.SEQUENTIAL)
 			{
 				_maxConnections = 1;
-				queue.push(assets.shift());
+				queue.push(assets.shift() as IAsset);
 				setupAsset(IAsset(queue[0]));
 			} else {
 				for (var i : int = 0;i < _maxConnections;i++)
@@ -132,7 +133,7 @@ package pt.wiz.dorothy.assets
 
 		private function asset_completeHandler(event : AssetEvent) : void 
 		{
-			queue.splice(queue.indexOf(event.target), 1);
+			completed_assets.push(queue.splice(queue.indexOf(event.target), 1)[0]);
 			if (queue.length < _maxConnections)
 			{
 				for (var i : int = 0;i < _maxConnections-queue.length;i++)
@@ -164,6 +165,11 @@ package pt.wiz.dorothy.assets
 		public function get(name:String):IAsset
 		{
 			return assetByName(name);
+		}
+		
+		public function getById(id:uint):IAsset
+		{
+			return completed_assets[id] as IAsset;
 		}
 		
 		public function getContent(name:String):*
