@@ -1,5 +1,7 @@
 ﻿package pt.wiz.dorothy.core
 {
+	import flash.display.MovieClip;
+	import flash.display.DisplayObjectContainer;
 	import pt.wiz.dorothy.events.AssetEvent;
 	
 	import pt.wiz.dorothy.events.PageEvent;
@@ -18,10 +20,12 @@
 		private var _pages:PagesCollection;
 		private var _curPages:PagesCollection;
 		private var _nextPage:Page;
+		private var _page_holder:MovieClip;
 
-		public function PageManager(pages:PagesCollection)
+		public function PageManager(pages:PagesCollection, page_holder:MovieClip)
 		{
 			_pages = pages;
+			_page_holder = page_holder;
 			initPageManager();
 		}
 
@@ -67,8 +71,11 @@
 					if (_nextPage.keepParent)
 					{
 						// Keep all loaded pages and load the new on top.
+						_nextPage.load();
 					} else {
 						// Keep all loaded pages, except the parent of the new page, and load the new one on top.
+						if (_curPages[_curPages.length - 1] == _nextPage.parent)
+							_nextPage.parent.movie.transitionOut();
 					}
 				} else {
 					// The new page is root page. Unload everthing and load the new one on top.
@@ -91,9 +98,16 @@
 		private function page_completeHandler(event:PageEvent) : void
 		{
 			var page:Page = event.target as Page;
+			
+			if (_nextPage == page)
+				_nextPage = null;
+			
+			_curPages.addItem(page);
+			
 			addContentEventListeners(page.movie);
 			Out.info("Page " + Page(event.target).id + " Loaded");
-			// TODO: Add movie to target holder.
+			_page_holder.addChild(page.movie);
+			page.movie.transitionIn();
 		}
 
 		private function page_progressHandler(event:PageEvent) : void
@@ -115,6 +129,8 @@
 		private function dpage_transitionOutCompleteHandler(event:PageEvent) : void
 		{
 			// TODO: Remove from display list and dispose.
+			if (_nextPage != null)
+				_nextPage.load();
 		}
 		
 	}

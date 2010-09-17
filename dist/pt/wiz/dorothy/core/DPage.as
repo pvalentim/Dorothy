@@ -1,4 +1,6 @@
 package pt.wiz.dorothy.core {
+	import pt.wiz.dorothy.events.PageEvent;
+	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
 
 	/**
@@ -24,27 +26,27 @@ package pt.wiz.dorothy.core {
 		public var assets:Array;
 		
 		public function DPage() {
-			
+			alpha = 0;
 		}
 		
 		public function transitionIn() : void
 		{
-			
+			TweenMax.to(this, .5, {alpha:1});
 		}
 		
 		public function transitionOut() : void
 		{
-			
+			TweenMax.to(this, .5, {alpha:0, onComplete:transitionOutComplete});	
 		}
 		
-		protected function transionOutComplete():void
+		protected function transitionOutComplete():void
 		{
-			
+			dispatchEvent(new PageEvent(PageEvent.TRANSITION_OUT_COMPLETE));
 		}
 		
-		protected function transionInComplete():void
+		protected function transitionInComplete():void
 		{
-			
+			dispatchEvent(new PageEvent(PageEvent.TRANSITION_IN_COMPLETE));
 		}
 	}
 }

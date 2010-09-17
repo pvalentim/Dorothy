@@ -1,5 +1,6 @@
 ﻿package pt.wiz.dorothy.core 
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
@@ -27,10 +28,10 @@
 		private var _siteManager:SiteManager;
 		private var _baseuri:String ="/";
 		private var _preloader:IPreloader;
+		private var _page_holder:MovieClip;
 		
 		protected var top_layer:Sprite;
 		protected var siteXML:String;
-		
 		
 		public function DApplication(siteXML:String, baseuri:String = "") 
 		{
@@ -96,9 +97,11 @@
 		private function _appReady(event : DEvent) : void 
 		{
 			if (stage)
+			{
 				initApp();
-			else
+			} else {
 				addEventListener(Event.ADDED_TO_STAGE, _addedToStage);
+			}
 		}
 
 		private function _addedToStage(event : Event) : void 
@@ -112,6 +115,12 @@
 		protected function initApp():void
 		{
 			throw new Error("Dorothy init function must be overridden");
+		}
+		
+		protected function setHolder(page_holder:MovieClip):void
+		{
+			_page_holder = page_holder;
+			_siteManager.page_holder = _page_holder;
 		}
 
 		private function parseFlashvars():void

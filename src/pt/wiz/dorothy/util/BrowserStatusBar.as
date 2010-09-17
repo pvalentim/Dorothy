@@ -14,10 +14,10 @@ package pt.wiz.dorothy.util {
 	 */
 	public class BrowserStatusBar {
 		
-		private static var _bgColor:uint = 0xdbdbdb;
-		private static var _borderColor:uint = 0x666666;
+		private static var _bgColor:uint = 0xffffff;
+		private static var _borderColor:uint = 0xdbdbdb;
 		private static var _textColor:uint = 0x000000;
-		private static var _textSize:uint = 9;
+		private static var _textSize:uint = 10;
 		
 		private static var _status : String;
 		private static var _instance:BrowserStatusBar;

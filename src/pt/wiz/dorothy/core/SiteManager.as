@@ -1,6 +1,7 @@
 ﻿package pt.wiz.dorothy.core 
 {
-	
+	import flash.display.MovieClip;
+	import flash.display.DisplayObjectContainer;
 	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.events.DEvent;
 	import flash.events.EventDispatcher;
@@ -18,6 +19,7 @@
 		
 		private var _siteXML:XML;
 		private var _pages:PagesCollection;
+		private var _page_holder:MovieClip;
 		
 		private var _pageManager:PageManager;
 		
@@ -80,14 +82,12 @@
 				//trace(i.path);
 			}
 			
-			setupPageManager();
-			
 			dispatchEvent(new DEvent(DEvent.APPLICATION_READY));
 		}
 
 		private function setupPageManager() : void
 		{
-			_pageManager = new PageManager(_pages);
+			_pageManager = new PageManager(_pages, _page_holder);
 		}
 		
 		private function parsePage(page:XML, parent:* = null):void
@@ -102,6 +102,21 @@
 					parsePage(p, _page);
 				}
 			}
+		}
+
+		public function get page_holder() : MovieClip
+		{
+			return _page_holder;
+		}
+
+		public function set page_holder(page_holder:MovieClip) : void
+		{
+			if (_page_holder == null)
+			{
+				_page_holder = page_holder;
+				setupPageManager();
+			}
+			
 		}
 		
 	}
