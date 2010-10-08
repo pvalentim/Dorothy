@@ -1,6 +1,7 @@
 package pt.wiz.dorothy.core
 {
 	
+	
 	import pt.wiz.dorothy.debug.Out;
 	/**
 	 * @author Pedro Valentim
@@ -22,14 +23,19 @@ package pt.wiz.dorothy.core
 			_data.push(item);
 		}
 		
+		public function removeItem(item:Page):void
+		{
+			_data.splice(_data.indexOf(item), 1);
+		}
+		
 		public function getItemAt(id:int):Page
 		{
 			return _data[id];
 		}
 		
-		public function getPageBy(field:String, value:String):Page
+		public function getPageBy(field:String, value:*):Page
 		{
-			if (_data[0][field] != null)
+			if (_data[0][field] != undefined)
 			{
 				for each (var p : Page in _data) {
 					if (p[field] == value)

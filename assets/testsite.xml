@@ -8,7 +8,7 @@
 <site title="Dorothy Example - {PAGE}" version="1.0">
 	<config>
 		<param name="debug" value="true" />
-		<param name="images_path" value="{BASEURI}app/templates/img/" />
+		<param name="images_path" value="{BASEURI}app/templates/imgs/" />
 		<param name="videos_path" value="{BASEURI}app/templates/videos/" />
 		<param name="swf_path" value="{BASEURI}app/templates/swf/" />
 	</config>
@@ -18,6 +18,8 @@
 	<pages>
 		<page id="homepage" src="homepage.swf" title="About Us" />
 		<page id="portfolio" src="portfolio.swf" title="Portfolio">
+			<asset src="{images_path}portfolio_1.jpg" id="portfolio_1" />
+			<asset src="{images_path}portfolio_2.jpg" id="portfolio_2" />
 			<page id="motion" src="motion.swf" title="Motion Graphics" keepParent="true"/>
 			<page id="web" src="web.swf" title="Web Design" />
 		</page>

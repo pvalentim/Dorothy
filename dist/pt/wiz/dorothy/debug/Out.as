@@ -8,7 +8,7 @@ package pt.wiz.dorothy.debug
 	 */
 	public class Out 
 	{	
-		private static var _logger:ILogger;
+		private static var _logger:ILogger = LoggerFactory.getLogger("Dorothy");
 		
 		public static function info(message:String, ...params):void
 		{

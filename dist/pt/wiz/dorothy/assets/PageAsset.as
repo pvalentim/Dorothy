@@ -7,9 +7,9 @@ package pt.wiz.dorothy.assets
 	 */
 	public class PageAsset extends MediaAsset
 	{
-		public function PageAsset(name:String)
+		public function PageAsset(name:String, id:String = "")
 		{
-			super(name);
+			super(name, id);
 		}
 		
 		public function get pageContent():DPage

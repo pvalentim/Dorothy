@@ -1,5 +1,7 @@
 ﻿package pt.wiz.dorothy.core 
 {
+	
+	import pt.wiz.dorothy.core.vo.AssetVO;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObjectContainer;
 	import pt.wiz.dorothy.debug.Out;
@@ -68,6 +70,12 @@
 		{
 			if (value.indexOf("{BASEURI}") > -1)
 				return value.replace("{BASEURI}", Dorothy.BASEURI);
+			
+			var cleaned_name:String = value.substring(value.indexOf("{")+1, value.indexOf("}"));
+			for each (var config : Object in Dorothy.configData) {
+				if (config.name == cleaned_name)
+					return config.value + value.substring(value.indexOf("}")+1, value.length);
+			}
 			return "";
 		}
 		
@@ -77,9 +85,6 @@
 			for each(var p:XML in _siteXML.pages.page)
 			{
 				parsePage(p);
-			}
-			for each (var i : Page in _pages.data) {
-				//trace(i.path);
 			}
 			
 			dispatchEvent(new DEvent(DEvent.APPLICATION_READY));
@@ -93,15 +98,25 @@
 		private function parsePage(page:XML, parent:* = null):void
 		{
 			var _page:Page = new Page(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
-			_pages.addItem(_page);
 			
+			_pages.addItem(_page);
 			if (page.children())
 			{
-				for each(var p in page.page)
+				for each(var p:XML in page.page)
 				{
 					parsePage(p, _page);
 				}
+				
+				for each(var a:XML in page.asset)
+				{
+					_page.assets.push(parseAsset(a));
+				}
 			}
+		}
+
+		private function parseAsset(asset:XML) : AssetVO
+		{
+			return new AssetVO(parseTokens(asset.@src), asset.@id);
 		}
 
 		public function get page_holder() : MovieClip

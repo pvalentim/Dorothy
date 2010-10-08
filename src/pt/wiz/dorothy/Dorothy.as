@@ -21,6 +21,11 @@
 			DApplication.instance.config.addParam(name, value);
 		}
 		
+		public static function get configData():Array
+		{
+			return DApplication.instance.config.config;
+		}
+		
 		public static function configDump():void
 		{
 			DApplication.instance.config.dump();

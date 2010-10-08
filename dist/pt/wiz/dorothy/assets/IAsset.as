@@ -10,5 +10,6 @@ package pt.wiz.dorothy.assets
 		function cancel():void;
 		function get content():*;
 		function get name():String;
+		function get id():String;
 	}
 }

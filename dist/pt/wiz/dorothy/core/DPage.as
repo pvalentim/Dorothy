@@ -1,4 +1,6 @@
-package pt.wiz.dorothy.core {
+package pt.wiz.dorothy.core
+{
+	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.events.PageEvent;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
@@ -23,7 +25,7 @@ package pt.wiz.dorothy.core {
 	 
 	public class DPage extends MovieClip {
 		
-		public var assets:Array;
+		public var assets:Array = [];
 		
 		public function DPage() {
 			alpha = 0;

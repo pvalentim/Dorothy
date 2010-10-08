@@ -1,4 +1,5 @@
 package pt.wiz.dorothy.assets {
+	import flash.events.HTTPStatusEvent;
 	import pt.wiz.dorothy.debug.Out;
 	import flash.net.URLRequest;
 	import pt.wiz.dorothy.events.AssetEvent;
@@ -31,20 +32,31 @@ package pt.wiz.dorothy.assets {
 		private var _status: String;
 		private var _loader : Loader;
 		private var _name : String;
+		private var _id:String;
 		
 		private var _content:*;
 
-		public function MediaAsset(name:String)
+		public function MediaAsset(name:String, id:String = "")
 		{
+			_id = id;
 			_name = name;
 			init();
 		}
 
 		private function init() : void {
 			_loader = new Loader();
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_completeHandler);
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_completeHandler);			_loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loader_progressHandler);			_loader.contentLoaderInfo.addEventListener(Event.OPEN, loader_startHandler);
+		}
+
+		private function loader_httpStatusHandler(event:HTTPStatusEvent):void
+		{
+			trace(id, event.status);
+			if (event.status == 200)
+			{
+				_status = "ok";
+			}
 		}
 
 		protected function loader_startHandler(event : Event) : void 
@@ -86,7 +98,12 @@ package pt.wiz.dorothy.assets {
 		{
 			if (_status == "loading")
 			{
-				_loader.close();
+				try {
+					_loader.close();
+				} catch (e:Error) {
+					Out.error(e.message);
+				}
+				
 				_status = "canceled";
 			}
 		}
@@ -104,6 +121,11 @@ package pt.wiz.dorothy.assets {
 		public function get content() : *
 		{
 			return _content;
+		}
+
+		public function get id() : String
+		{
+			return _id;
 		}
 	}
 }

@@ -47,7 +47,7 @@
 		
 		private function initApplication():void
 		{
-			Out.logger = LoggerFactory.getLogger("Dorothy Logger");
+			//Out.logger = LoggerFactory.getLogger("Dorothy Logger");
 			Out.info("Dorothy Framework v" + Dorothy.VERSION + " initialized");
 			
 			_instance = this;

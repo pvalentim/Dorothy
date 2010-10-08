@@ -34,6 +34,8 @@ package pt.wiz.dorothy.assets
 		private var _loadingMode:String;
 		private var _maxConnections:uint = 5;
 		
+		private var _isCanceled:Boolean = false;
+		
 		public static const SEQUENTIAL:String = "sequencial";
 		public static const PARALLEL:String = "parallel";
 		
@@ -56,14 +58,14 @@ package pt.wiz.dorothy.assets
 			_loadingMode = AssetManager.PARALLEL;
 		}
 
-		public function add(name:String, type:String="auto"):void
+		public function add(name:String, type:String="auto", id:String = ""):void
 		{
 			if (!_loading)
 			{
 				if (assetByName(name) == null)
 				{
-					
-					assets.push(getAssetType(name, type));
+					type = (type == "auto") ? name.substring(name.lastIndexOf(".")+1, name.length) : type;
+					assets.push(getAssetType(name, type, id));
 					Out.debug("Dorothy Assets - Added new asset "+name);
 				} else {
 					Out.debug("Dorothy Assets - Asset "+ name +" already in list. Use get(\""+name+"\") or getContent(\""+name+"\")");
@@ -73,7 +75,7 @@ package pt.wiz.dorothy.assets
 			}
 		}
 
-		private function getAssetType(name:String, type:String) : IAsset
+		private function getAssetType(name:String, type:String, id:String = "") : IAsset
 		{
 			switch(type){
 				case "auto":
@@ -83,10 +85,10 @@ package pt.wiz.dorothy.assets
 				case "jpg":
 				case "gif":
 				case "png":
-					return new MediaAsset(name);
+					return new MediaAsset(name, id);
 					break;
 				case "page":
-					return new PageAsset(name);
+					return new PageAsset(name, id);
 					break;
 			}
 			return null;
@@ -133,25 +135,28 @@ package pt.wiz.dorothy.assets
 
 		private function asset_completeHandler(event : AssetEvent) : void 
 		{
-			completed_assets.push(queue.splice(queue.indexOf(event.target), 1)[0]);
-			if (queue.length < _maxConnections)
+			if (!_isCanceled)
 			{
-				for (var i : int = 0;i < _maxConnections-queue.length;i++)
+				completed_assets.push(queue.splice(queue.indexOf(event.target), 1)[0]);
+				if (queue.length < _maxConnections)
 				{
-					if (assets[i] != null)
+					for (var i : int = 0;i < _maxConnections-queue.length;i++)
 					{
-						var asset:IAsset = assets.shift();
-						queue.push(asset);
-						setupAsset(asset);
+						if (assets[i] != null)
+						{
+							var asset:IAsset = assets.shift();
+							queue.push(asset);
+							setupAsset(asset);
+						}
 					}
 				}
-			}
-			if (queue.length == 0)
-			{
-				queue = [];
-				assets = [];
-				_loading = false;
-				dispatchEvent(new AssetEvent(AssetEvent.COMPLETE));
+				if (queue.length == 0)
+				{
+					queue = [];
+					assets = [];
+					_loading = false;
+					dispatchEvent(new AssetEvent(AssetEvent.COMPLETE));
+				}
 			}
 		}
 
@@ -167,9 +172,19 @@ package pt.wiz.dorothy.assets
 			return assetByName(name);
 		}
 		
-		public function getById(id:uint):IAsset
+		public function getAt(id:uint):IAsset
 		{
 			return completed_assets[id] as IAsset;
+		}
+		
+		public function getById(id:String):IAsset
+		{
+			for each (var a : IAsset in completed_assets)
+			{
+				if (a.id == id)
+					return a;
+			}
+			return null;
 		}
 		
 		public function getContent(name:String):*
@@ -212,6 +227,19 @@ package pt.wiz.dorothy.assets
 		public function set maxConnections(maxConnections : uint) : void
 		{
 			_maxConnections = maxConnections;
+		}
+
+		public function get readyAssets() : Array
+		{
+			return completed_assets;
+		}
+
+		public function cancel():void
+		{			
+			_isCanceled = true;
+			for each (var asset2 : IAsset in queue) {
+				asset2.cancel();
+			}
 		}
 	}
 }

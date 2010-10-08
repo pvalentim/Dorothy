@@ -8,7 +8,7 @@
 	public class ConfigManager
 	{
 		
-		private var _config:Object;
+		private var _config:Array;
 		
 		public function ConfigManager() 
 		{
@@ -17,36 +17,41 @@
 		
 		private function initConfig():void
 		{
-			_config = new Object();
+			_config = [];
 		}
 		
 		public function parseXMLConfig(config:XMLList):void
 		{
 			for each( var param in config )
 			{
-				_config[param.@name] = param.@value;
+				_config.push({name:param.@name, value:param.@value});
 			}
 		}
 		
 		public function addParam(name:String, value:*):void
 		{
-			_config[name] = value;
+			_config.push({name:name, value:value});
 		}
 		
 		public function getParam(name:String):*
 		{
-			if (_config[name] != undefined)
-				return _config[name];
-			else
-				return "Invalid Parameter";
+			for each (var config : Object in _config) {
+				if (config.name == name)
+					return config.value;
+			}
+			return "Invalid Parameter";
 		}
 		
 		public function dump():void
 		{
-			for (var prop in _config)
-			{
-				Out.debug("Param - name: " + prop + " - value: " + _config[prop]);
+			for each (var config : Object in _config) {
+				Out.debug("Param - name: " + config.name + " - value: " + config.value);
 			}
+		}
+
+		public function get config() : Array
+		{
+			return _config;
 		}
 		
 	}

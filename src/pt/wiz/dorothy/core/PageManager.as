@@ -1,5 +1,6 @@
 ﻿package pt.wiz.dorothy.core
 {
+	
 	import flash.display.MovieClip;
 	import flash.display.DisplayObjectContainer;
 	import pt.wiz.dorothy.events.AssetEvent;
@@ -38,7 +39,12 @@
 		private function swfaddress_changeHandler(event:SWFAddressEvent) : void
 		{
 			var path:String = "/"+event.pathNames.join("/");
-			//trace(path);
+			
+			if (_nextPage != null)
+			{
+				_nextPage.cancel();
+			}
+			
 			_nextPage = _pages.getPageByPath(path);
 			if (_nextPage == null)
 			{
@@ -64,7 +70,7 @@
 			addPageEventListeners(_nextPage);
 			if (_curPages.length > 0)
 			{
-				var lastLoadedPage:Page = Page(_curPages[_curPages.length - 1]);
+				var lastLoadedPage:Page = Page(_curPages.getItemAt(_curPages.length - 1));
 				if (_nextPage.parent == lastLoadedPage)
 				{
 					// The new page is child of a current loaded page.
@@ -74,7 +80,7 @@
 						_nextPage.load();
 					} else {
 						// Keep all loaded pages, except the parent of the new page, and load the new one on top.
-						if (_curPages[_curPages.length - 1] == _nextPage.parent)
+						if (_curPages.getItemAt(_curPages.length - 1) == _nextPage.parent)
 							_nextPage.parent.movie.transitionOut();
 					}
 				} else {
@@ -89,7 +95,7 @@
 				_nextPage.load();
 			}
 		}
-		
+
 		private function addPageEventListeners(page:Page):void
 		{
 			page.addEventListener(PageEvent.LOAD_PROGRESS, page_progressHandler);			page.addEventListener(PageEvent.LOAD_COMPLETE, page_completeHandler);
@@ -120,6 +126,12 @@
 			content.addEventListener(PageEvent.TRANSITION_OUT_COMPLETE, dpage_transitionOutCompleteHandler);
 			content.addEventListener(PageEvent.TRANSITION_IN_COMPLETE, dpage_transitionInCompleteHandler);
 		}
+		
+		private function removeContentEventListeners(content:DPage):void
+		{
+			content.addEventListener(PageEvent.TRANSITION_OUT_COMPLETE, dpage_transitionOutCompleteHandler);
+			content.addEventListener(PageEvent.TRANSITION_IN_COMPLETE, dpage_transitionInCompleteHandler);
+		}
 
 		private function dpage_transitionInCompleteHandler(event:PageEvent) : void
 		{
@@ -128,7 +140,10 @@
 
 		private function dpage_transitionOutCompleteHandler(event:PageEvent) : void
 		{
-			// TODO: Remove from display list and dispose.
+			var page:DPage = event.target as DPage;
+			removeContentEventListeners(page);
+			_page_holder.removeChild(page);
+			_curPages.removeItem(_pages.getPageBy("movie", page));
 			if (_nextPage != null)
 				_nextPage.load();
 		}

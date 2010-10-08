@@ -1,5 +1,8 @@
 package pt.wiz.dorothy.core
 {
+	import pt.wiz.dorothy.debug.Out;
+	import pt.wiz.dorothy.assets.IAsset;
+	import pt.wiz.dorothy.core.vo.AssetVO;
 	import pt.wiz.dorothy.assets.PageAsset;
 	import pt.wiz.dorothy.events.PageEvent;
 	import pt.wiz.dorothy.events.AssetEvent;
@@ -30,12 +33,13 @@ package pt.wiz.dorothy.core
 		public var src:String;
 		public var title : String;
 		public var path:String = "";
+		public var assets:Array = [];
 		public var keepParent:Boolean;
-		
 		public var children:Array;
 		public var parent:Page;
 		public var movie:DPage;
-		public var pageLoader:AssetManager;
+		
+		private var pageLoader:AssetManager;
 
 		public function Page(id:String, src:String, title:String, keepParent:Boolean = false, parent:Page = null)
 		{
@@ -55,7 +59,13 @@ package pt.wiz.dorothy.core
 		public function load():void
 		{
 			pageLoader = new AssetManager();
-			pageLoader.add(Dorothy.getParam("swf_path")+src, "page");
+			pageLoader.add(Dorothy.getParam("swf_path")+src, "page", id);
+			
+			for each (var asset : AssetVO in assets)
+			{
+				pageLoader.add(asset.src, "auto", asset.id);
+			}
+			
 			pageLoader.addEventListener(AssetEvent.COMPLETE, pageLoader_completeHandler);
 			pageLoader.addEventListener(AssetEvent.PROGRESS_ALL, pageLoader_progressHandler);
 			pageLoader.start();
@@ -67,8 +77,22 @@ package pt.wiz.dorothy.core
 
 		private function pageLoader_completeHandler(event:AssetEvent) : void
 		{
-			movie = PageAsset(pageLoader.getById(0)).pageContent;
+			movie = PageAsset(pageLoader.getById(id)).pageContent;
+			for (var i:int = 0; i < pageLoader.readyAssets.length; i++)
+			{
+				var a:IAsset = pageLoader.getAt(i);
+				if (a.id != id)
+					movie.assets.push(a);
+			}
+			pageLoader = null;
 			dispatchEvent(new PageEvent(PageEvent.LOAD_COMPLETE));
+		}
+
+		public function cancel():void
+		{
+			Out.debug("We called cancel.");
+			if (pageLoader != null)
+				pageLoader.cancel();
 		}
 
 	}
