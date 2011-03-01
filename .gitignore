@@ -8,3 +8,4 @@
 .settings/org.eclipse.core.resources.prefs
 .settings/com.powerflasher.fdt.core.formatter.prefs
 *.svn
+.DS_Store
