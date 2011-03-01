@@ -3,9 +3,8 @@
 .externalToolBuilders/Dorothy Builder.launch
 .externalToolBuilders/DorothyBuild.launch
 .externalToolBuilders/com.powerflasher.fdt.core.FlashBuilder.launch
-logo.psd
 .settings/com.powerflasher.fdt.classpath
 .settings/com.powerflasher.fdt.core.prefs
 .settings/org.eclipse.core.resources.prefs
 .settings/com.powerflasher.fdt.core.formatter.prefs
-framework_planning.xls
+*.svn
