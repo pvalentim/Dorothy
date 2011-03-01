@@ -1,6 +1,7 @@
 ﻿package pt.wiz.dorothy.core
 {
 	
+	import pt.wiz.dorothy.Dorothy;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObjectContainer;
 	import pt.wiz.dorothy.events.AssetEvent;
@@ -92,8 +93,14 @@
 				}
 			} else {
 				// Load Page and TransitionIn.
-				_nextPage.load();
+				loadNextPage();
 			}
+		}
+		
+		private function loadNextPage():void
+		{
+			_nextPage.load();
+			Dorothy.preloader.transitionIn();
 		}
 
 		private function addPageEventListeners(page:Page):void
@@ -113,12 +120,13 @@
 			addContentEventListeners(page.movie);
 			Out.info("Page " + Page(event.target).id + " Loaded");
 			_page_holder.addChild(page.movie);
+			Dorothy.preloader.transitionOut();
 			page.movie.transitionIn();
 		}
 
 		private function page_progressHandler(event:PageEvent) : void
 		{
-			// TODO: Update preloader.
+			Dorothy.preloader.update(event.progressInfo.percentageLoaded);
 		}
 		
 		private function addContentEventListeners(content:DPage):void
@@ -145,7 +153,7 @@
 			_page_holder.removeChild(page);
 			_curPages.removeItem(_pages.getPageBy("movie", page));
 			if (_nextPage != null)
-				_nextPage.load();
+				loadNextPage();
 		}
 		
 	}

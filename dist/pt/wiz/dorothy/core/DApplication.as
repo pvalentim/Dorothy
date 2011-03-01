@@ -1,12 +1,10 @@
 ﻿package pt.wiz.dorothy.core 
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
-	import org.as3commons.logging.LoggerFactory;
 
 	import flash.ui.ContextMenu;
 	import pt.wiz.dorothy.util.ContextMenuUtil;

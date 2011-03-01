@@ -30,7 +30,6 @@ package pt.wiz.dorothy.core
 				initPreloader(null);
 			else
 				addEventListener(Event.ADDED_TO_STAGE, initPreloader);
-				
 		}
 
 		private function initPreloader(event:Event) : void
@@ -95,8 +94,8 @@ package pt.wiz.dorothy.core
 			f.font = "Lucida Grande";
 			f.size = 12;
 			f.color = 0x585858;
+			_info.defaultTextFormat = f;
 			_info.text = "Loading - 0%";
-			_info.setTextFormat(f);
 			addChild(_info);
 		}
 
@@ -117,9 +116,10 @@ package pt.wiz.dorothy.core
 			this.y = Math.round(stage.stageHeight * .5 - this.height * .5);
 		}
 
-		public function update(bytesLoaded:int, bytesTotal:int) : void
+		public function update(percentage:Number) : void
 		{
-			var p:Number = (bytesLoaded / bytesTotal) * 324;
+			var p:Number = percentage * 323;
+			_info.text = "Loading - "+ Math.round(percentage*100) +"%";
 			_progressBar.width = Math.round(p);
 			_progressShadow.x = _progressBar.width + 10;
 		}

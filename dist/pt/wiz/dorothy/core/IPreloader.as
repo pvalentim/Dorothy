@@ -5,7 +5,7 @@ package pt.wiz.dorothy.core
 	 */
 	public interface IPreloader
 	{
-		function update(bytesLoaded:int, bytesTotal:int):void
+		function update(percentage:Number):void
 		function transitionIn():void
 		function transitionOut():void
 	}

@@ -35,6 +35,8 @@ package pt.wiz.dorothy.assets {
 		private var _id:String;
 		
 		private var _content:*;
+		
+		private var _percentageLoaded:Number;
 
 		public function MediaAsset(name:String, id:String = "")
 		{
@@ -44,6 +46,7 @@ package pt.wiz.dorothy.assets {
 		}
 
 		private function init() : void {
+			_percentageLoaded = 0;
 			_loader = new Loader();
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loader_completeHandler);			_loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, loader_httpStatusHandler);
 			_loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
@@ -52,7 +55,6 @@ package pt.wiz.dorothy.assets {
 
 		private function loader_httpStatusHandler(event:HTTPStatusEvent):void
 		{
-			trace(id, event.status);
 			if (event.status == 200)
 			{
 				_status = "ok";
@@ -66,14 +68,15 @@ package pt.wiz.dorothy.assets {
 
 		protected function loader_progressHandler(event : ProgressEvent) : void 
 		{
-			dispatchEvent(new AssetEvent(AssetEvent.PROGRESS, event.bytesLoaded/event.bytesTotal));
+			_percentageLoaded = event.bytesLoaded / event.bytesTotal;
+			dispatchEvent(new AssetEvent(AssetEvent.PROGRESS, event.bytesLoaded/event.bytesTotal, event.bytesLoaded, event.bytesTotal));
 		}
 
 		protected function loader_errorHandler(event : IOErrorEvent) : void 
 		{
 			_status = "error";
 			Out.debug(_name + " asset error: "+ event.text);
-			dispatchEvent(new AssetEvent(AssetEvent.ERROR, 0, event.text));
+			dispatchEvent(new AssetEvent(AssetEvent.ERROR, 0, 0, 0, event.text));
 		}
 
 		protected function loader_completeHandler(event : Event) : void 
@@ -126,6 +129,11 @@ package pt.wiz.dorothy.assets {
 		public function get id() : String
 		{
 			return _id;
+		}
+
+		public function get percentageLoaded():Number
+		{
+			return _percentageLoaded;
 		}
 	}
 }

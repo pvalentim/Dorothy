@@ -73,6 +73,7 @@ package pt.wiz.dorothy.core
 
 		private function pageLoader_progressHandler(event:AssetEvent) : void
 		{
+			dispatchEvent(new PageEvent(PageEvent.LOAD_PROGRESS, {bytesLoaded:event.bytesLoaded, bytesTotal:event.bytesTotal, percentageLoaded:event.percentLoaded}));
 		}
 
 		private function pageLoader_completeHandler(event:AssetEvent) : void

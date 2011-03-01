@@ -1,5 +1,8 @@
 package pt.wiz.dorothy.assets 
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.events.Event;
 	import pt.wiz.dorothy.events.AssetEvent;
 	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.assets.DAssets;
@@ -33,6 +36,10 @@ package pt.wiz.dorothy.assets
 		private var _loading:Boolean;
 		private var _loadingMode:String;
 		private var _maxConnections:uint = 5;
+		private var _estimatedSize:Number;
+		private var _totalLoaded:Number;
+		private var _totalAssets:uint;
+		private var _progressTimer:Timer;
 		
 		private var _isCanceled:Boolean = false;
 		
@@ -55,6 +62,8 @@ package pt.wiz.dorothy.assets
 			DAssets.addLoader(this);
 			assets = [];
 			completed_assets = [];
+			_totalAssets = 0;
+			_estimatedSize = 30000;
 			_loadingMode = AssetManager.PARALLEL;
 		}
 
@@ -98,6 +107,8 @@ package pt.wiz.dorothy.assets
 		{
 			_loading = true;
 			queue = [];
+			_totalLoaded = 0;
+			_totalAssets = assets.length;
 			if (_loadingMode == AssetManager.SEQUENTIAL)
 			{
 				_maxConnections = 1;
@@ -114,6 +125,27 @@ package pt.wiz.dorothy.assets
 					}
 				}
 			}
+			startProgress();
+		}
+
+		private function startProgress():void
+		{
+			_progressTimer = new Timer(1000 / 30);
+			_progressTimer.addEventListener(TimerEvent.TIMER, dispatchProgress);
+			_progressTimer.start();
+		}
+		
+		private function dispatchProgress(event:TimerEvent):void
+		{
+			var tp:Number = 0;
+			for each (var asset : IAsset in queue) {
+				tp += asset.percentageLoaded;
+			}
+			for each (var asset2 : IAsset in completed_assets) {
+				tp += asset2.percentageLoaded;
+			}
+			var pl:Number = tp / _totalAssets;
+			dispatchEvent(new AssetEvent(AssetEvent.PROGRESS_ALL, Number(pl)));
 		}
 
 		private function asset_errorHandler(event : AssetEvent) : void 
@@ -156,6 +188,7 @@ package pt.wiz.dorothy.assets
 					assets = [];
 					_loading = false;
 					dispatchEvent(new AssetEvent(AssetEvent.COMPLETE));
+					_progressTimer.stop();
 				}
 			}
 		}
@@ -163,8 +196,17 @@ package pt.wiz.dorothy.assets
 		private function setupAsset(asset:IAsset):void
 		{
 			asset.addEventListener(AssetEvent.COMPLETE, asset_completeHandler);
+			asset.addEventListener(AssetEvent.PROGRESS, asset_progressHandler);
 			asset.addEventListener(AssetEvent.ERROR, asset_errorHandler);
 			asset.load();
+		}
+
+		private function asset_progressHandler(event:AssetEvent):void
+		{
+			if (!_estimatedSize)
+			{
+				_estimatedSize = event.bytesTotal * _totalAssets;
+			}
 		}
 
 		public function get(name:String):IAsset
