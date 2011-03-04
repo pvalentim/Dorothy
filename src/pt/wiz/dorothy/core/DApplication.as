@@ -132,7 +132,14 @@
 			
 		}
 		
-		public static function get instance():DApplication { return _instance; }
+		public static function get instance():DApplication { 
+			if (_instance) {
+				return _instance;
+			} else {
+				throw new Error("Dorothy Error :: Can't run without an application");
+			}
+			return null;
+		}
 		
 		public function get baseuri():String { return _baseuri; }
 		

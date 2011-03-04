@@ -71,12 +71,16 @@
 			if (value.indexOf("{BASEURI}") > -1)
 				return value.replace("{BASEURI}", Dorothy.BASEURI);
 			
-			var cleaned_name:String = value.substring(value.indexOf("{")+1, value.indexOf("}"));
-			for each (var config : Object in Dorothy.configData) {
-				if (config.name == cleaned_name)
-					return config.value + value.substring(value.indexOf("}")+1, value.length);
+			if (value.indexOf("{") > -1)
+			{
+				var cleaned_name:String = value.substring(value.indexOf("{")+1, value.indexOf("}"));
+				for each (var config : Object in Dorothy.configData) {
+					if (config.name == cleaned_name)
+						return config.value + value.substring(value.indexOf("}")+1, value.length);
+				}
 			}
-			return "";
+			
+			return value;
 		}
 		
 		private function parsePages():void

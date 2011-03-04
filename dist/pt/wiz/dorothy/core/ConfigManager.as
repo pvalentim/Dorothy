@@ -20,14 +20,6 @@
 			_config = [];
 		}
 		
-		public function parseXMLConfig(config:XMLList):void
-		{
-			for each( var param in config )
-			{
-				_config.push({name:param.@name, value:param.@value});
-			}
-		}
-		
 		public function addParam(name:String, value:*):void
 		{
 			_config.push({name:name, value:value});
