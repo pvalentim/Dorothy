@@ -68,6 +68,7 @@ package pt.wiz.dorothy.assets {
 
 		protected function loader_progressHandler(event : ProgressEvent) : void 
 		{
+			if (event.bytesTotal == 0) event.bytesTotal = 1;
 			_percentageLoaded = event.bytesLoaded / event.bytesTotal;
 			dispatchEvent(new AssetEvent(AssetEvent.PROGRESS, event.bytesLoaded/event.bytesTotal, event.bytesLoaded, event.bytesTotal));
 		}

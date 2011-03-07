@@ -1,6 +1,5 @@
 package pt.wiz.dorothy.core
 {
-	import pt.wiz.dorothy.debug.Out;
 	import pt.wiz.dorothy.events.PageEvent;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
