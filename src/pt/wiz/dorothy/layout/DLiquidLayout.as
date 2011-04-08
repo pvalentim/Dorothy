@@ -41,7 +41,7 @@ package pt.wiz.dorothy.layout
 		{
 			initPinPoints();
 			objects = [];
-			stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			//stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 		}
 		private function initPinPoints() : void
 		{

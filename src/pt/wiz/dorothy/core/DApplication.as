@@ -54,6 +54,7 @@
 			
 			_siteManager = new SiteManager();
 			_siteManager.addEventListener(DEvent.APPLICATION_READY, _appReady);
+			_siteManager.addEventListener(DEvent.CHANGED_PAGE, pageChanged);
 			
 			// Defaults stage align and scaleMode to a more used case.
 			stage.align = StageAlign.TOP_LEFT;
@@ -120,6 +121,11 @@
 			_page_holder = page_holder;
 			_siteManager.page_holder = _page_holder;
 		}
+		
+		protected function pageChanged(event:DEvent):void
+		{
+			
+		}
 
 		private function parseFlashvars():void
 		{
@@ -155,7 +161,9 @@
 
 		public function set preloader(preloader:IPreloader) : void
 		{
+			top_layer.removeChild(_preloader as DisplayObject);
 			_preloader = preloader;
+			top_layer.addChild(_preloader as DisplayObject);
 		}
 	}
 

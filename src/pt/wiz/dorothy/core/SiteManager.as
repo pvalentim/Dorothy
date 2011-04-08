@@ -97,6 +97,12 @@
 		private function setupPageManager() : void
 		{
 			_pageManager = new PageManager(_pages, _page_holder);
+			_pageManager.addEventListener(DEvent.CHANGED_PAGE, _changedPage);
+		}
+
+		private function _changedPage(event:DEvent):void
+		{
+			dispatchEvent(event);
 		}
 		
 		private function parsePage(page:XML, parent:* = null):void
@@ -135,7 +141,11 @@
 				_page_holder = page_holder;
 				setupPageManager();
 			}
-			
+		}
+
+		public function get pageManager():PageManager
+		{
+			return _pageManager;
 		}
 		
 	}

@@ -41,7 +41,7 @@ package pt.wiz.dorothy.layout
 		{
 			initPinPoints();
 			objects = [];
-			stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			//stage.addEventListener(Event.RESIZE, stage_resizeHandler);
 		}
 		private function initPinPoints() : void
 		{
@@ -96,7 +96,7 @@ package pt.wiz.dorothy.layout
 			layoutObject.obj.y = layoutObject.pinPoint.y + layoutObject.offsetY;
 		}
 		
-		public function pinObject(obj:DisplayObject, pinPoint:Point, pinToCenter:Boolean, useCurrentOffset:Boolean = true, offsetX:Number = 0, offsetY:Number = 0):void
+		public function pinObject(obj:DisplayObject, pinPoint:Point, pinToCenter:Boolean=false, useCurrentOffset:Boolean = true, offsetX:Number = 0, offsetY:Number = 0):void
 		{
 			if (useCurrentOffset)
 			{

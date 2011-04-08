@@ -1,5 +1,6 @@
 package pt.wiz.dorothy.core
 {
+	import pt.wiz.dorothy.assets.IAsset;
 	import pt.wiz.dorothy.events.PageEvent;
 	import com.greensock.TweenMax;
 	import flash.display.MovieClip;
@@ -28,6 +29,15 @@ package pt.wiz.dorothy.core
 		
 		public function DPage() {
 			alpha = 0;
+		}
+		
+		protected function getAsset(id:String):IAsset
+		{
+			for each (var asset : IAsset in assets) {
+				if (asset.id == id)
+					return asset;
+			}
+			return null;
 		}
 		
 		public function transitionIn() : void

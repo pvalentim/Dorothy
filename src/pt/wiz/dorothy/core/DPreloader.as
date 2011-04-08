@@ -35,8 +35,17 @@ package pt.wiz.dorothy.core
 		private function initPreloader(event:Event) : void
 		{
 			drawPreloader();
+			if (event) removeEventListener(Event.ADDED_TO_STAGE, initPreloader);
+			
+			addEventListener(Event.REMOVED_FROM_STAGE, removed);
+			
 			stage.addEventListener(Event.RESIZE, stage_onResize);
 			stage_onResize(null);
+		}
+
+		private function removed(event:Event):void
+		{
+			stage.removeEventListener(Event.RESIZE, stage_onResize);
 		}
 
 		private function drawPreloader() : void

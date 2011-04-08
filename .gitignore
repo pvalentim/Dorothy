@@ -9,3 +9,4 @@
 .settings/com.powerflasher.fdt.core.formatter.prefs
 *.svn
 .DS_Store
+.settings/org.eclipse.ltk.core.refactoring.prefs

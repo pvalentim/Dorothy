@@ -1,6 +1,7 @@
 ﻿package pt.wiz.dorothy.core
 {
 	
+	import pt.wiz.dorothy.events.DEvent;
 	import pt.wiz.dorothy.Dorothy;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObjectContainer;
@@ -122,6 +123,7 @@
 			_page_holder.addChild(page.movie);
 			Dorothy.preloader.transitionOut();
 			page.movie.transitionIn();
+			dispatchEvent(new DEvent(DEvent.CHANGED_PAGE, page.id));
 		}
 
 		private function page_progressHandler(event:PageEvent) : void
