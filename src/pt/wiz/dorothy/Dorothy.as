@@ -9,7 +9,7 @@
 	public class Dorothy
 	{
 		
-		public static const VERSION:String = "0.2.0";
+		public static const VERSION:String = "0.3.0";
 		
 		public static function getParam(name:String):*
 		{
