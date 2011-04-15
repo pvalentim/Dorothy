@@ -45,8 +45,12 @@
 		
 		private function initApplication():void
 		{
-			//Out.logger = LoggerFactory.getLogger("Dorothy Logger");
 			Out.info("Dorothy Framework v" + Dorothy.VERSION + " initialized");
+			
+			/* Check if SWF is running in the browser */
+			if (root.loaderInfo.url.indexOf("http") == 0) SystemManager.isOnline = true;
+			
+			parseFlashvars();
 			
 			_instance = this;
 			_config = new ConfigManager();
@@ -63,12 +67,9 @@
 			this.contextMenu = new ContextMenu();
 			ContextMenuUtil.contextMenu = this.contextMenu;
 			ContextMenuUtil.disableDefaults();
-			ContextMenuUtil.addItem("Powered by Dorothy " + Dorothy.VERSION, false);			ContextMenuUtil.addItem("Developed by Wiz Interactive © "+ new Date().fullYear.toString(), false);
+			ContextMenuUtil.addItem("Powered by Dorothy " + Dorothy.VERSION, false);
+			ContextMenuUtil.addItem("Developed by Wiz Interactive © "+ new Date().fullYear.toString(), false);
 			
-			/* Check if SWF is running in the browser */
-			if (root.loaderInfo.url.indexOf("http") == 0) SystemManager.isOnline = true;
-			
-			parseFlashvars();
 			setupLayers();
 			setupPreloader();
 		}

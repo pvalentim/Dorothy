@@ -92,8 +92,8 @@ package pt.wiz.dorothy.layout
 
 		private function updateObject(layoutObject:LayoutObject):void
 		{
-			layoutObject.obj.x = layoutObject.pinPoint.x + layoutObject.offsetX;
-			layoutObject.obj.y = layoutObject.pinPoint.y + layoutObject.offsetY;
+			layoutObject.obj.x = Math.round(layoutObject.pinPoint.x + layoutObject.offsetX);
+			layoutObject.obj.y = Math.round(layoutObject.pinPoint.y + layoutObject.offsetY);
 		}
 		
 		public function pinObject(obj:DisplayObject, pinPoint:Point, pinToCenter:Boolean=false, useCurrentOffset:Boolean = true, offsetX:Number = 0, offsetY:Number = 0):void

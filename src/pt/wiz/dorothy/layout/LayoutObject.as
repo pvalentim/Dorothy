@@ -36,10 +36,6 @@ package pt.wiz.dorothy.layout
 				offsetX = Math.abs(offsetX) - halfWidth;
 				offsetY = Math.abs(offsetY) - halfHeight;
 			}
-			trace(obj.y, pinPoint.y, "y");
-			trace(obj.x, pinPoint.x, "x");
-			trace(offsetY, obj.name, "offsetY");
-			trace(offsetX, obj.name, "offsetX");
 		}
 
 	}
