@@ -1,0 +1,9 @@
+Roadmap:
+
+v0.4.0
+	- Abstrar Page class to allow internal pages
+	- Continue to fix bugs
+	- Complete config parsing
+	
+v1
+	- Unit tests
