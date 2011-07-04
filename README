@@ -3,7 +3,14 @@ Roadmap:
 v0.4.0
 	- Abstract Page class to allow internal pages
 	- Continue to fix bugs
-	- Complete config parsing
+	- Continue to complete config parsing
+
+v0.5.0
+	- Actions (XML defined actions that are trigged by swfaddres)
+	- Advanced routing (Sinatra like routing)
 	
+v0.6.0
+	- Backbone like models and sync (REST)
+
 v1
 	- Unit tests
