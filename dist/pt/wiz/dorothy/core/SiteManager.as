@@ -107,7 +107,13 @@
 		
 		private function parsePage(page:XML, parent:* = null):void
 		{
-			var _page:Page = new Page(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
+			var _page:Page;
+			if (page.attribute("type") && page.@type == "internal")
+			{
+				_page = new InternalPage(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
+			} else {
+				_page = new ExternalPage(page.@id, page.@src, page.@title, (page.attribute("keepParent").toString() == "true"), parent);
+			}
 			
 			_pages.addItem(_page);
 			if (page.children())

@@ -50,7 +50,7 @@
 			_nextPage = _pages.getPageByPath(path);
 			if (_nextPage == null)
 			{
-				Out.error("No page found");
+				//Out.error("No page found");
 				// TODO: Show 404
 				return;
 			} else {
@@ -100,18 +100,25 @@
 		
 		private function loadNextPage():void
 		{
-			_nextPage.load();
 			Dorothy.preloader.transitionIn();
+			_nextPage.load();
 		}
 
 		private function addPageEventListeners(page:Page):void
 		{
 			page.addEventListener(PageEvent.LOAD_PROGRESS, page_progressHandler);			page.addEventListener(PageEvent.LOAD_COMPLETE, page_completeHandler);
 		}
+		
+		private function removePageEventListeners(page:Page):void
+		{
+			page.removeEventListener(PageEvent.LOAD_PROGRESS, page_progressHandler);
+			page.removeEventListener(PageEvent.LOAD_COMPLETE, page_completeHandler);
+		}
 
 		private function page_completeHandler(event:PageEvent) : void
 		{
 			var page:Page = event.target as Page;
+			removePageEventListeners(page);
 			
 			if (_nextPage == page)
 				_nextPage = null;

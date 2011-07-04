@@ -23,5 +23,6 @@
 			<page id="motion" src="motion.swf" title="Motion Graphics" keepParent="true"/>
 			<page id="web" src="web.swf" title="Web Design" />
 		</page>
+		<page id="contactos" type="internal" src="Contactos" title="Contactos" />
 	</pages>
 </site>

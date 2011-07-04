@@ -30,6 +30,7 @@ package pt.wiz.dorothy.core
 	public class Page extends EventDispatcher
 	{
 		public var id:String;
+		public var type:String;
 		public var src:String;
 		public var title : String;
 		public var path:String = "";
@@ -39,9 +40,9 @@ package pt.wiz.dorothy.core
 		public var parent:Page;
 		public var movie:DPage;
 		
-		private var pageLoader:AssetManager;
+		protected var pageLoader:AssetManager;
 
-		public function Page(id:String, src:String, title:String, keepParent:Boolean = false, parent:Page = null)
+		public function Page(id:String, src:String, title:String, keepParent:Boolean = false, parent:Page = null, type:String = "external")
 		{
 			if (parent != null)
 			{
@@ -51,6 +52,7 @@ package pt.wiz.dorothy.core
 				path = "/" + id;
 			}
 			this.id = id;
+			this.type = type;
 			this.src = src;
 			this.title = title;
 			this.keepParent = keepParent;
@@ -58,34 +60,16 @@ package pt.wiz.dorothy.core
 		
 		public function load():void
 		{
-			pageLoader = new AssetManager();
-			pageLoader.add(Dorothy.getParam("swf_path")+src, "page", id);
 			
-			for each (var asset : AssetVO in assets)
-			{
-				pageLoader.add(asset.src, "auto", asset.id);
-			}
-			
-			pageLoader.addEventListener(AssetEvent.COMPLETE, pageLoader_completeHandler);
-			pageLoader.addEventListener(AssetEvent.PROGRESS_ALL, pageLoader_progressHandler);
-			pageLoader.start();
 		}
 
-		private function pageLoader_progressHandler(event:AssetEvent) : void
+		protected function pageLoader_progressHandler(event:AssetEvent) : void
 		{
 			dispatchEvent(new PageEvent(PageEvent.LOAD_PROGRESS, {bytesLoaded:event.bytesLoaded, bytesTotal:event.bytesTotal, percentageLoaded:event.percentLoaded}));
 		}
 
-		private function pageLoader_completeHandler(event:AssetEvent) : void
+		protected function pageLoader_completeHandler(event:AssetEvent) : void
 		{
-			movie = PageAsset(pageLoader.getById(id)).pageContent;
-			for (var i:int = 0; i < pageLoader.readyAssets.length; i++)
-			{
-				var a:IAsset = pageLoader.getAt(i);
-				if (a.id != id)
-					movie.assets.push(a);
-			}
-			pageLoader = null;
 			dispatchEvent(new PageEvent(PageEvent.LOAD_COMPLETE));
 		}
 

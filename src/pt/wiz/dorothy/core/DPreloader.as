@@ -1,5 +1,6 @@
 package pt.wiz.dorothy.core
 {
+	import pt.wiz.dorothy.debug.Out;
 	import flash.filters.BlurFilter;
 	import com.greensock.TweenMax;
 	import flash.geom.Matrix;
@@ -135,12 +136,14 @@ package pt.wiz.dorothy.core
 
 		public function transitionIn() : void
 		{
+			Out.debug("DPreloader transition in");
 			TweenMax.to(this, .3, {autoAlpha:1});
 		}
 
 		public function transitionOut() : void
 		{
-			TweenMax.to(this, .3, {autoAlpha:0});
+			Out.debug("DPreloader transition out");
+			TweenMax.to(this, .3, {autoAlpha:0, overwrite:1});
 		}
 	}
 }
