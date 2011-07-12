@@ -26,6 +26,7 @@ package pt.wiz.dorothy.layout
 		private var stageHalfHeight:Number; // Cached half height of stage for better performance.
 		private var startWidth:Number;
 		private var startHeight:Number;
+		private var _roundProps:Boolean;
 
 		// Cached half height of stage for better performance.
 		
@@ -92,8 +93,16 @@ package pt.wiz.dorothy.layout
 
 		private function updateObject(layoutObject:LayoutObject):void
 		{
-			layoutObject.obj.x = layoutObject.pinPoint.x + layoutObject.offsetX;
-			layoutObject.obj.y = layoutObject.pinPoint.y + layoutObject.offsetY;
+			var x:Number = layoutObject.pinPoint.x + layoutObject.offsetX;
+			var y:Number = layoutObject.pinPoint.y + layoutObject.offsetY;
+			
+			if (_roundProps){
+				x = Math.round(x);
+				y = Math.round(y);
+			}
+	
+			layoutObject.obj.x = x;
+			layoutObject.obj.y = y;
 		}
 		
 		public function pinObject(obj:DisplayObject, pinPoint:Point, pinToCenter:Boolean=false, useCurrentOffset:Boolean = true, offsetX:Number = 0, offsetY:Number = 0):void
@@ -105,6 +114,16 @@ package pt.wiz.dorothy.layout
 				offsetX = obj.x - pinPoint.x;
 			}
 			objects.push(new LayoutObject(obj, pinPoint, offsetX, offsetY, pinToCenter));
+		}
+
+		public function get roundProps():Boolean
+		{
+			return _roundProps;
+		}
+
+		public function set roundProps(roundProps:Boolean):void
+		{
+			_roundProps = roundProps;
 		}
 	}
 }

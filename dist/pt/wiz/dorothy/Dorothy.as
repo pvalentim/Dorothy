@@ -9,7 +9,11 @@
 	public class Dorothy
 	{
 		
-		public static const VERSION:String = "0.2.0";
+		public static const VERSION:String = "0.3.1";
+		public static const PAGEFLOW_OUT_LOAD_IN:String = "dorothy_pageflow_outloadin";
+		public static const PAGEFLOW_LOAD_OUT_IN:String = "dorothy_pageflow_loadoutin";
+		public static const PAGEFLOW_LOAD_IN_OUT:String = "dorothy_pageflow_loadinout";
+		public static const PAGEFLOW_LOAD_IN_AND_OUT:String = "dorothy_pageflow_loadinandout";
 		
 		public static function getParam(name:String):*
 		{
@@ -44,6 +48,16 @@
 		public static function set preloader(preloader:IPreloader):void
 		{
 			DApplication.instance.preloader = preloader;
+		}
+		
+		public static function get pageFlow():String
+		{
+			return DApplication.instance.pageFlow;
+		}
+		
+		public static function set pageFlow(pageFlow:String):void
+		{
+			DApplication.instance.pageFlow = pageFlow;
 		}
 		
 	}

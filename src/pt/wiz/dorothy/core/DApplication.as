@@ -27,6 +27,7 @@
 		private var _baseuri:String ="/";
 		private var _preloader:IPreloader;
 		private var _page_holder:MovieClip;
+		private var _pageFlow:String;
 		
 		protected var top_layer:Sprite;
 		protected var siteXML:String;
@@ -37,20 +38,24 @@
 			if (siteXML)
 			{
 				this.siteXML = siteXML;
-				initApplication();
+				addEventListener(Event.ADDED_TO_STAGE, initApplication);
 			} else {
 				throw Error("Dorothy Error - Can't initialize without a site xml path");
 			}
 		}
 		
-		private function initApplication():void
+		private function initApplication(event:Event):void
 		{
+			removeEventListener(Event.ADDED_TO_STAGE, initApplication);
+			
 			//Out.logger = LoggerFactory.getLogger("Dorothy Logger");
 			Out.info("Dorothy Framework v" + Dorothy.VERSION + " initialized");
 			
 			_instance = this;
 			_config = new ConfigManager();
 			_config.addParam("sitexml", siteXML);
+			
+			_pageFlow = Dorothy.PAGEFLOW_OUT_LOAD_IN;
 			
 			_siteManager = new SiteManager();
 			_siteManager.addEventListener(DEvent.APPLICATION_READY, _appReady);
@@ -164,6 +169,16 @@
 			top_layer.removeChild(_preloader as DisplayObject);
 			_preloader = preloader;
 			top_layer.addChild(_preloader as DisplayObject);
+		}
+
+		public function get pageFlow():String
+		{
+			return _pageFlow;
+		}
+
+		public function set pageFlow(pageFlow:String):void
+		{
+			_pageFlow = pageFlow;
 		}
 	}
 

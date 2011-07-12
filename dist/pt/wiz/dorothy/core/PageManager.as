@@ -83,14 +83,27 @@
 					} else {
 						// Keep all loaded pages, except the parent of the new page, and load the new one on top.
 						if (_curPages.getItemAt(_curPages.length - 1) == _nextPage.parent)
-							_nextPage.parent.movie.transitionOut();
+						{
+							if (Dorothy.pageFlow == Dorothy.PAGEFLOW_OUT_LOAD_IN)
+							{
+								_nextPage.parent.movie.transitionOut();
+							} else if (Dorothy.pageFlow == Dorothy.PAGEFLOW_LOAD_IN_AND_OUT) {
+								loadNextPage();
+							}
+						}
 					}
 				} else {
 					// The new page is root page. Unload everthing and load the new one on top.
-					for each (var page : Page in _curPages.data)
+					if (Dorothy.pageFlow == Dorothy.PAGEFLOW_OUT_LOAD_IN)
 					{
-						page.movie.transitionOut();
+						for each (var page : Page in _curPages.data)
+						{
+							page.movie.transitionOut();
+						}
+					} else if (Dorothy.pageFlow == Dorothy.PAGEFLOW_LOAD_IN_AND_OUT) {
+						loadNextPage();
 					}
+					
 				}
 			} else {
 				// Load Page and TransitionIn.
@@ -118,13 +131,20 @@
 		private function page_completeHandler(event:PageEvent) : void
 		{
 			var page:Page = event.target as Page;
-			removePageEventListeners(page);
 			
+
 			if (_nextPage == page)
 				_nextPage = null;
 			
-			_curPages.addItem(page);
 			
+			if (Dorothy.pageFlow == Dorothy.PAGEFLOW_LOAD_IN_AND_OUT) {
+				var cur:Page = _curPages.getItemAt(_curPages.length - 1);
+				if (cur)
+					cur.movie.transitionOut();
+			}
+			
+			_curPages.addItem(page);
+			removePageEventListeners(page);
 			addContentEventListeners(page.movie);
 			Out.info("Page " + Page(event.target).id + " Loaded");
 			_page_holder.addChild(page.movie);
@@ -161,7 +181,8 @@
 			removeContentEventListeners(page);
 			_page_holder.removeChild(page);
 			_curPages.removeItem(_pages.getPageBy("movie", page));
-			if (_nextPage != null)
+			
+			if (_nextPage != null && Dorothy.pageFlow == Dorothy.PAGEFLOW_OUT_LOAD_IN)
 				loadNextPage();
 		}
 		
